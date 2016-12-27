@@ -23,10 +23,21 @@ int GetStillElevators(Elevator* lpMyElevator, int* iStillElevatorBuff);*/
 
 //  主线程中的计时器函数。
 VOID CALLBACK MainThreadTimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
+class singleton
+{
+protected:
+	singleton()
+	{}
+private:
+	static singleton* p;
+public:
+	static singleton* initance();
+	//分配外部需求，将电梯外部需求转化为电梯内部需求。
+	//对Elevator里面的外部需求数组进行扫描。分配任务。
+	bool DispatchOuterRequtst(Elevator** lpMyElevator);
 
-//分配外部需求，将电梯外部需求转化为电梯内部需求。
-//对Elevator里面的外部需求数组进行扫描。分配任务。
-bool DispatchOuterRequtst(Elevator** lpMyElevator);
+
+};
 
 //将外部需求发送给自己楼下正在上升的电梯。
 //返回true表示任务成功分配。
@@ -43,4 +54,4 @@ bool SendToAboveFloorDowning(Elevator** lpMyElevator, int iRequestFloor, int iDo
 bool SendToUpingOrStill(Elevator** lpMyElevator, int iRequestFloor, int iUpingCount, int* lpUpingElevators, int iStillCount, int* lpStillElevators);
 
 //开启五部电梯的全部线程。
-//bool StartAllElevators(Elevator** lpMyElevator, int iElevatorCount);
+bool StartAllElevators(Elevator** lpMyElevator, int iElevatorCount);

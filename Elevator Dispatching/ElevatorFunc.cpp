@@ -2,7 +2,11 @@
 #include"ElevatorFunc.h"
 
 extern Elevator* lpMyElevator[5];
-
+singleton* singleton::p = new singleton;
+singleton* singleton::initance()
+{
+	return p;
+}
 //当用户点击电梯外部响应按钮时的函数。
 bool ClickElevatorOuterBtn(WORD wControlID)
 {
@@ -431,13 +435,15 @@ int GetStillElevators(Elevator** lpMyElevator, int* iStillElevatorBuff)
 VOID CALLBACK MainThreadTimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 {
 	//定时刷新并分配外部需求。
-	DispatchOuterRequtst(lpMyElevator);
+	singleton *t1 = singleton::initance();
+	t1->DispatchOuterRequtst(lpMyElevator);
+
 }
 
 
 //分配外部需求，将电梯外部需求转化为电梯内部需求。
 //对Elevator里面的外部需求数组进行扫描。分配任务。
-bool DispatchOuterRequtst(Elevator** lpMyElevator)
+bool singleton::DispatchOuterRequtst(Elevator** lpMyElevator)
 {
 	int iUpingCount = 0, iDowningCount = 0, iStillCount = 0;//记录此时各种状态电梯的数量。
 	int UpingElevators[6] = { NULL }, DowningElevators[6] = { NULL }, StillElevators[6] = { NULL };//记录各种状态电梯的下标。
